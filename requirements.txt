@@ -1,0 +1,10 @@
+flask==2.2.5
+pytest==7.3.1
+pytest-bdd==5.0.0
+gunicorn==20.1.0                # For production WSGI server
+requests==2.31.0               # If your service calls other APIs
+python-dotenv==1.0.0           # To load .env files in Flask
+psycopg2-binary==2.9.6         # PostgreSQL driver (if using PostgreSQL)
+PyJWT==2.7.0                   # For JWT token handling
+Flask-SQLAlchemy==3.1.1
+factory_boy==3.3.0
