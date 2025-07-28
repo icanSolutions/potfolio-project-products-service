@@ -1,8 +1,8 @@
 import pytest
-from app import create_app
+# from app import create_app
 from app.models import db, Product
 from factories import ProductFactory
-
+from app import create_app
 
 
 @pytest.fixture
@@ -14,7 +14,8 @@ def client():
     with app.app_context():
         db.create_all()
         yield app.test_client()
-        
+        db.session.remove()
+        db.drop_all()
     
 def test_create_a_product(client):
     """Create a new product and test the ststuse code & name"""
@@ -23,9 +24,11 @@ def test_create_a_product(client):
         "description": "Mechanical keyboard",
         "price": 49.99
     })
-    assert response.statuse_code == 201
     data = response.get_json()
     assert data['name'] == "Keyboard"
+    assert response.status_code == 201
+    print(response.get_data(as_text=True))
+    
     
 def test_get_product(client):
     """Create new product and get it via /products/<id>"""
@@ -36,14 +39,14 @@ def test_get_product(client):
     assert data['name'] == product.name
     
 def test_update_a_product(client):
-    """Update a new product and test it product statuse code & name"""
-    product = Product(name="Keyboard", description="Mechanical", price=49.99)
+    """Update a new product and test it product status code & name"""
+    product = ProductFactory()
     response = client.put(f"/products/{product.id}", json={
         "price": 50.99
     })
-    assert response.statuse_code == 200
+    assert response.status_code == 200
     data = response.get_json()
-    assert product.price == 49.99
+    assert product.price != data['price']
     assert data['name'] == "Keyboard"
     assert data['price'] == 50.99
     
