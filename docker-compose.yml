@@ -1,5 +1,10 @@
 version: '3.8'
 
+
+networks:
+  backend_network:
+    external: true
+
 services:
   products:
     build: .
@@ -7,7 +12,9 @@ services:
     env_file:
       - .env
     ports:
-      - "5000:5000"
+      - "5001:5000"
     volumes:
       - .:/app
+    networks:
+      - backend_network
     

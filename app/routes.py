@@ -33,7 +33,7 @@ def get_all():
     products = get_list_or_404(Product)
     return jsonify(products_schema.dump(products)), 200
 
-@bp.route('/products/<str:products_price>', methods=['GET'])
+@bp.route('/products/<float:products_price>', methods=['GET'])
 def get_by_price(product_price):
     products = get_list_or_404(Product, 'price', product_price)
     return jsonify(products_schema.dump(products)), 200
