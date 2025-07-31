@@ -37,14 +37,6 @@ def check_response(client):
     data = res.get_json()
     assert "id" in data
     
-@given("A product exists")
-def an_exist_product(client):
-    """Create a product in the DB before the test."""
-    product = Product(name="Keyboard", description="Mechanical", price=49.99)
-    with client.application.app_context():
-        db.session.add(product)
-        db.session.commit()
-    client.product_id = product.id  # Save for use in other steps
     
 @when("I send a PUT request to /products/<id> with valid data")
 def send_put_request(client):
@@ -58,7 +50,7 @@ def send_put_request(client):
 @then("i receive a 200 response with an ID")
 def check_response(client):
     res = client.last_response
-    assert res.status_code == 201
+    assert res.status_code == 200
     data = res.get_json()
     assert "id" in data
     
@@ -79,8 +71,7 @@ def send_put_request(client):
     client.last_response = response
     
 @then("i receive a 204 response with an ID")
-def check_response(client):
+def check_delete_response(client):
     res = client.last_response
     assert res.status_code == 204
-    data = res.get_json()
-    assert "id" in data
+    assert res.data == b''  # Response body should be empty

@@ -3,8 +3,8 @@ from .models import Product, db
 from .schema import ProductSchema
 from utils.db_helpers import get_or_404, get_list_or_404  # Handle product not found 404
 
-product_schema = ProductSchema()
-products_schema = ProductSchema(many=True)
+product_schema = ProductSchema(session=db.session)
+products_schema = ProductSchema(many=True, session=db.session)
 bp = Blueprint("routes", __name__)
 
 # Example route: Health check
@@ -45,7 +45,7 @@ def update(product_id):
     data = request.get_json()
     updated_product = product_schema.load(data, instance=product, partial=True)
     db.session.commit()
-    return jsonify(products_schema.dump(updated_product)), 200
+    return jsonify(product_schema.dump(updated_product)), 200
 
 
 @bp.route('/products/<int:product_id>', methods=['DELETE'])
@@ -53,4 +53,4 @@ def delete(product_id):
     product = get_or_404(Product, product_id)
     db.session.delete(product)
     db.session.commit()
-    return jsonify({'message': 'Product deleted successfully'}), 200
+    return jsonify({'message': 'Product deleted successfully'}), 204

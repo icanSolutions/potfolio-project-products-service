@@ -25,6 +25,7 @@ def test_create_a_product(client):
         "price": 49.99
     })
     data = response.get_json()
+    print(data)
     assert data['name'] == "Keyboard"
     assert response.status_code == 201
     print(response.get_data(as_text=True))
@@ -46,31 +47,35 @@ def test_update_a_product(client):
     })
     assert response.status_code == 200
     data = response.get_json()
-    assert product.price != data['price']
-    assert data['name'] == "Keyboard"
+    assert data['name'] == product.name
     assert data['price'] == 50.99
     
 def test_delete_product(client):
-    product = Product(name="Keyboard", description="Mechanical", price=49.99)
-    prod_count = len(Product.all())
+    product = ProductFactory()
+    db.session.add(product)
+    db.session.commit()
+    prod_count = Product.query.count()
     assert prod_count == 1
     res = client.delete(f"/products/{product.id}")
     assert res.status_code == 204
-    prod_after_count = len(Product.all())
+    prod_after_count = Product.query.count()
     assert prod_after_count == 0
     
 def test_list_products(client):
     names = []
-    for i in range(5):
+    for _ in range(5):
         product = ProductFactory()
         names.append(product.name)
-    res = client.get(f"/products")
-    data = res.get_json()
-    products_count_after = len(data)
-    assert products_count_after == 5
-    assert data[0].name == names[0]
-    assert data[4].name == names[4]
         
+    db.session.commit()
+    
+    res = client.get("/products")
+    data = res.get_json()
+    
+    assert len(data) == 5
+
+    response_names = [p["name"] for p in data]
+    assert set(response_names) == set(names)
     
     
             
