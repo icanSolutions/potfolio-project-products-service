@@ -8,7 +8,7 @@ from app.models import db
 load_dotenv()
 
 app = create_app()
-
+print("DB_URI is:", os.getenv('DATABASE_URL'))
 
 if __name__ == '__main__':
     port = int(os.getenv('SERVICE_PORT', 5001))

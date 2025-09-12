@@ -9,9 +9,11 @@ from app import create_app
 def client():
     app = create_app()
     app.config['TESTING'] = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+    # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     with app.app_context():
+        db.drop_all()
         db.create_all()
         yield app.test_client()
         db.session.remove()
