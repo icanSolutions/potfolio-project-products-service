@@ -23,13 +23,19 @@ jobs:
           docker compose -f ${{ github.workspace }}/docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from products
           docker compose -f ${{ github.workspace }}/docker-compose.test.yml down -v
 
+      - name: Show current files
+        run: |
+          echo "Current dir: $(pwd)"
+          ls -la
+          ls -la ${{ github.workspace }}
+
       # Build final image for Docker Hub
       - name: Build Docker image for registry
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
           IMAGE_NAME="$DOCKER_USERNAME/products-service:${GITHUB_SHA}"
-          docker build -t "$IMAGE_NAME" ./${{ github.workspace }}
+          docker build -t "$IMAGE_NAME" 
 
       # Login to Docker Hub
       - name: Log in to Docker Hub
