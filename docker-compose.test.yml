@@ -14,7 +14,7 @@ services:
       - backend_network
     depends_on:
       - products_db
-    command: pytest
+    command: pytest -s -v
 
   products_db:
     image: postgres:15

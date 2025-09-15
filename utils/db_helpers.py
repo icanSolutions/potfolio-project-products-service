@@ -2,7 +2,7 @@ from app.errors import ProductNotFoundError
 
 def get_or_404(model, obj_id):
     if obj_id:
-        instance = model.session.get(obj_id)
+        instance = model.query.get(obj_id)
         if not instance:
             raise ProductNotFoundError(f"{model.__name__} with ID {obj_id} not found")
     else:
