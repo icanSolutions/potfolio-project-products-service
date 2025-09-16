@@ -5,6 +5,19 @@ networks:
     external: false
 
 services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # Connection
+      - "15672:15672" # Management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - backend_network
+
   products:
     build: .
     container_name: products_service
@@ -14,6 +27,7 @@ services:
       - backend_network
     depends_on:
       - products_db
+      - rabbitmq
     command: pytest -s -v
 
   products_db:
@@ -26,3 +40,5 @@ services:
       POSTGRES_PASSWORD: test
     networks:
       - backend_network
+
+    
