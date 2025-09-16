@@ -2,6 +2,11 @@ from flask import Blueprint, request, jsonify
 from .models import Product, db
 from .schema import ProductSchema
 from utils.db_helpers import get_or_404, get_list_or_404  # Handle product not found 404
+from app.rabbitmq import send_delete_product_message
+import os
+
+REVIEWS_SERVICE_URL = os.getenv("REVIEWS_SERVICE_URL")
+
 
 product_schema = ProductSchema(session=db.session)
 products_schema = ProductSchema(many=True, session=db.session)
@@ -53,4 +58,7 @@ def delete(product_id):
     product = get_or_404(Product, product_id)
     db.session.delete(product)
     db.session.commit()
+    
+    send_delete_product_message(product_id)
+    
     return jsonify({'message': 'Product deleted successfully'}), 204
