@@ -6,7 +6,8 @@ class ProductFactory(factory.alchemy.SQLAlchemyModelFactory):
     class Meta:
         model = Product
         sqlalchemy_session = db.session
-        sqlalchemy_session_persistence = "flush"
+        sqlalchemy_session_persistence = "commit"
+        # sqlalchemy_session_persistence = "flush"
 
     name = factory.Faker("word")
     description = factory.Faker("sentence")

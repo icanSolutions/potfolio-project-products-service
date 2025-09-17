@@ -31,19 +31,30 @@ def test_create_a_product(client):
     assert data['name'] == "Keyboard"
     assert response.status_code == 201
     print(response.get_data(as_text=True))
+    with client.application.app_context():
+        product_in_db = Product.query.filter_by(name="Keyboard").first()
+        assert product_in_db is not None, "Product not found in DB"
+        assert product_in_db.description == "Mechanical keyboard"
+        assert product_in_db.price == 49.99
+        print("Product exists in DB:", product_in_db)
     
     
 def test_get_product(client):
     """Create new product and get it via /products/<id>"""
     product = ProductFactory()
+    db.session.add(product)
+    db.session.commit()
     res = client.get(f"/products/{product.id}")
     data = res.get_json()
+    print(data)
     assert data['id'] == product.id
     assert data['name'] == product.name
     
 def test_update_a_product(client):
     """Update a new product and test it product status code & name"""
     product = ProductFactory()
+    db.session.add(product)
+    db.session.commit()
     response = client.put(f"/products/{product.id}", json={
         "price": 50.99
     })
