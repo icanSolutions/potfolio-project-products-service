@@ -76,7 +76,4 @@ services:
       - rabbitmq
     networks:
       - backend_network
-    volumes:
-      - ./tests:/tests
-    working_dir: ./tests
-    command: ["pytest", "-s", "-v", "integration_test.py"]
+    command: pytest ./tests/integration_test.py -v
