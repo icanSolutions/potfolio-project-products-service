@@ -16,6 +16,11 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Run integration tests
+        run: |
+          docker compose -f docker-compose.int_test.yml up --build --abort-on-container-exit --exit-code-from integration_tests
+          docker compose -f docker-compose.int_test.yml down -v
+
       - name: Build and push image
         run: |
           IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/products-service:${{ github.sha }}"
@@ -25,10 +30,11 @@ jobs:
           docker tag "$IMAGE_NAME" ${{ secrets.DOCKER_USERNAME }}/products-service:latest
           docker push ${{ secrets.DOCKER_USERNAME }}/products-service:latest
 
-      - name: Trigger integration tests
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.GH_PERSONAL_TOKEN }}
-          repository: icanSolutions/portfolio-project-intergration-test
-          event-type: products-service-updated
-          client-payload: '{"image":"${{ steps.build.outputs.image_name }}"}'
+      
+      # - name: Trigger integration tests
+      #   uses: peter-evans/repository-dispatch@v3
+      #   with:
+      #     token: ${{ secrets.GH_PERSONAL_TOKEN }}
+      #     repository: icanSolutions/portfolio-project-intergration-test
+      #     event-type: products-service-updated
+      #     client-payload: '{"image":"${{ steps.build.outputs.image_name }}"}'

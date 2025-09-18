@@ -1,0 +1,82 @@
+version: '3.8'
+
+networks:
+  backend_network:
+    external: false
+
+services:
+  products_service:
+    image: ${{ secrets.DOCKER_USERNAME }}/products-service:latest
+    container_name: products_service
+    environment:
+      - DATABASE_URL=postgresql://test:test@products_db:5432/products_test_db
+      - PRODUCTS_SERVICE_URL=http://products:5001
+      - REVIEWS_SERVICE_URL=http://reviews:5002
+      
+    networks:
+      - backend_network
+    depends_on:
+      - products_db
+      - rabbitmq
+
+  reviews_service:
+    image: ${{ secrets.DOCKER_USERNAME }}/reviews-service:latest
+    container_name: reviews_service
+    environment:
+      - DATABASE_URL=postgresql://test:test@reviews_db:5432/reviews_test_db
+      - PRODUCTS_SERVICE_URL=http://products:5001
+      - REVIEWS_SERVICE_URL=http://reviews:5002
+    networks:
+      - backend_network
+    depends_on:
+      - reviews_db
+      - rabbitmq
+
+  products_db:
+    image: postgres:15
+    container_name: products_test_db
+    restart: "no"
+    environment:
+      POSTGRES_DB: products_test_db
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+    networks:
+      - backend_network
+
+  reviews_db:
+    image: postgres:15
+    container_name: reviews_test_db
+    restart: "no"
+    environment:
+      POSTGRES_DB: reviews_test_db
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+    networks:
+      - backend_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # Connection
+      - "15672:15672" # Management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - backend_network
+
+  integration_tests:
+    image: python:3.10
+    depends_on:
+      - products_service
+      - reviews_service
+      - products_db
+      - reviews_db
+      - rabbitmq
+    networks:
+      - backend_network
+    volumes:
+      - ./tests:/tests
+    working_dir: /tests
+    command: ["pytest", "-s", "-v", "integration_test.py"]
