@@ -13,8 +13,10 @@ services:
       - .env.prod
     ports:
       - "5001:5001"
-    volumes:
-      - .:/app
     networks:
       - backend_network
-    
+    command: >
+      sh -c "
+        alembic revision --autogenerate -m 'initial' &&
+        alembic upgrade head
+      "

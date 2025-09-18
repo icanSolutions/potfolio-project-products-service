@@ -19,6 +19,7 @@ jobs:
       - name: Build and push image
         run: |
           IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/products-service:${{ github.sha }}"
+          echo "image_name=$IMAGE_NAME" >> $GITHUB_OUTPUT
           docker build -t "$IMAGE_NAME" .
           docker push "$IMAGE_NAME"
           docker tag "$IMAGE_NAME" ${{ secrets.DOCKER_USERNAME }}/products-service:latest
@@ -30,4 +31,4 @@ jobs:
           token: ${{ secrets.GH_PERSONAL_TOKEN }}
           repository: icanSolutions/integration-tests
           event-type: products-service-updated
-          client-payload: '{"image":"${{ secrets.DOCKER_USERNAME }}/products-service:${{ github.sha }}"}'
+          client-payload: '{"image":"${{ steps.build.outputs.image_name }}"}'
