@@ -20,6 +20,11 @@ jobs:
         run: |
           docker compose -f docker-compose.int_test.yml up --build --abort-on-container-exit --exit-code-from integration_tests
           docker compose -f docker-compose.int_test.yml down -v
+        env:
+          PRODUCTS_SERVICE_DB_URL: ${{ secrets.PRODUCTS_SERVICE_TEST_DB_URL }}
+          REVIEWS_SERVICE_DB_URL: ${{ secrets.REVIEWS_SERVICE_TEST_DB_URL }}
+          PRODUCTS_SERVICE_URL: ${{ secrets.PRODUCTS_SERVICE_LOCAL_URL }}
+          REVIEWS_SERVICE_URL: ${{ secrets.PRODUCTS_SERVICE_LOCAL_URL }}
 
       - name: Build and push image
         run: |

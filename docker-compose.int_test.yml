@@ -6,12 +6,12 @@ networks:
 
 services:
   products_service:
-    image: ${{ secrets.DOCKER_USERNAME }}/products-service:latest
+    build: .
     container_name: products_service
     environment:
-      - DATABASE_URL=postgresql://test:test@products_db:5432/products_test_db
-      - PRODUCTS_SERVICE_URL=http://products:5001
-      - REVIEWS_SERVICE_URL=http://reviews:5002
+      - DATABASE_URL=${PRODUCTS_SERVICE_DB_URL}
+      - PRODUCTS_SERVICE_URL=${PRODUCTS_SERVICE_URL}
+      - REVIEWS_SERVICE_URL=${REVIEWS_SERVICE_URL}     
       
     networks:
       - backend_network
@@ -23,9 +23,9 @@ services:
     image: ${{ secrets.DOCKER_USERNAME }}/reviews-service:latest
     container_name: reviews_service
     environment:
-      - DATABASE_URL=postgresql://test:test@reviews_db:5432/reviews_test_db
-      - PRODUCTS_SERVICE_URL=http://products:5001
-      - REVIEWS_SERVICE_URL=http://reviews:5002
+      - DATABASE_URL=${REVIEWS_SERVICE_DB_URL}
+      - PRODUCTS_SERVICE_URL=${PRODUCTS_SERVICE_URL}
+      - REVIEWS_SERVICE_URL=${REVIEWS_SERVICE_URL}
     networks:
       - backend_network
     depends_on:
