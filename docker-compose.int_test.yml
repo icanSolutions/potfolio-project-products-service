@@ -11,7 +11,7 @@ services:
     environment:
       - DATABASE_URL=${PRODUCTS_SERVICE_DB_URL}
       - PRODUCTS_SERVICE_URL=${PRODUCTS_SERVICE_URL}
-      - REVIEWS_SERVICE_URL=${REVIEWS_SERVICE_URL}     
+      - REVIEWS_SERVICE_URL=${REVIEWS_SERVICE_URL}
       
     networks:
       - backend_network
@@ -20,7 +20,7 @@ services:
       - rabbitmq
 
   reviews_service:
-    image: ${REVIEWS_SERVICE_IMAGE}
+    image: "morbarda/reviews-service:latest"
     container_name: reviews_service
     environment:
       - DATABASE_URL=${REVIEWS_SERVICE_DB_URL}
