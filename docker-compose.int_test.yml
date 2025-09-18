@@ -90,12 +90,12 @@ services:
       bash -c "
         pip install -r /requirements.txt &&
         python -c \"
-        import sys
-        from app import create_app
-        from app.models import db
-        app = create_app()
-        with app.app_context():
-            db.create_all()
+      import sys
+      from app import create_app
+      from app.models import db
+      app = create_app()
+      with app.app_context():
+        db.create_all()
         \" &&
               pytest /tests/integration_test.py -v
             "
