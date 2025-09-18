@@ -80,4 +80,7 @@ services:
       - products_db
       - reviews_db
       - rabbitmq
+    environment:
+      - PRODUCTS_SERVICE_URL=${PRODUCTS_SERVICE_URL}
+      - REVIEWS_SERVICE_URL=${REVIEWS_SERVICE_URL}
     command: bash -c "pip install -r /requirements.txt && pytest /tests/integration_test.py -v"
