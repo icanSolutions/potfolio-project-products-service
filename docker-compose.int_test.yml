@@ -71,6 +71,7 @@ services:
     working_dir: /tests
     volumes:
       - ./tests:/tests
+      - ./requirements.txt:/requirements.txt
     networks:
       - backend_network
     depends_on:
@@ -79,4 +80,4 @@ services:
       - products_db
       - reviews_db
       - rabbitmq
-    command: bash -c "pip install pytest aiohttp && pytest /tests/integration_test.py -v"
+    command: bash -c "pip install -r /requirements.txt && pytest /tests/integration_test.py -v"
