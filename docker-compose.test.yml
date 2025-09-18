@@ -31,7 +31,7 @@ services:
     depends_on:
       - products_db
       - rabbitmq
-    command: pytest /tests/test_routes.py -v
+    command: pytest ./tests/test_routes.py -v
 
   products_db:
     image: postgres:15
