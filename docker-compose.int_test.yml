@@ -20,7 +20,7 @@ services:
       - rabbitmq
 
   reviews_service:
-    image: ${{ secrets.DOCKER_USERNAME }}/reviews-service:latest
+    image: ${REVIEWS_SERVICE_IMAGE}
     container_name: reviews_service
     environment:
       - DATABASE_URL=${REVIEWS_SERVICE_DB_URL}

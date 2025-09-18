@@ -25,6 +25,8 @@ jobs:
           REVIEWS_SERVICE_DB_URL: ${{ secrets.REVIEWS_SERVICE_TEST_DB_URL }}
           PRODUCTS_SERVICE_URL: ${{ secrets.PRODUCTS_SERVICE_LOCAL_URL }}
           REVIEWS_SERVICE_URL: ${{ secrets.PRODUCTS_SERVICE_LOCAL_URL }}
+          PRODUCTS_SERVICE_IMAGE: ${{ secrets.DOCKER_USERNAME }}/products-service:latest
+          REVIEWS_SERVICE_IMAGE: ${{ secrets.DOCKER_USERNAME }}/reviews-service:latest
 
       - name: Build and push image
         run: |
