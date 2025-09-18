@@ -5,6 +5,7 @@ class Config:
     ENV = os.getenv('FLASK_ENV', 'production')
     DEBUG = os.getenv('DEBUG', 'false').lower() == 'true'
     TESTING = False
+    SERVICE_PORT = 5001
 
 
 
