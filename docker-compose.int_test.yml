@@ -18,7 +18,8 @@ services:
     networks:
       - backend_network
     depends_on:
-      - products_db
+      - products_db:
+        condition: service_healthy
       - rabbitmq
 
   reviews_service:
@@ -34,7 +35,8 @@ services:
     networks:
       - backend_network
     depends_on:
-      - reviews_db
+      - reviews_db:
+        condition: service_healthy
       - rabbitmq
 
   products_db:
