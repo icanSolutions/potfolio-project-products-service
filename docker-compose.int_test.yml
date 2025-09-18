@@ -78,5 +78,5 @@ services:
       - backend_network
     volumes:
       - ./tests:/tests
-    working_dir: /tests
+    working_dir: ./tests
     command: ["pytest", "-s", "-v", "integration_test.py"]
