@@ -5,6 +5,9 @@ __pycache__/
 # Virtual environment
 venv/
 .env
+.env.dev
+.env.test
+.env.prod
 
 # IDE/editor settings
 .vscode/

@@ -3,7 +3,7 @@ version: '3.8'
 
 networks:
   backend_network:
-    external: true
+    external: false
 
 services:
   products:
@@ -17,4 +17,21 @@ services:
       - .:/app
     networks:
       - backend_network
+
+    products_db:
+      image: postgres:15
+      container_name: products_dev_db
+      restart: always
+      env_file:
+        - .env.dev
+      environment:
+        POSTGRES_DB: ${DEV_PRODUCTS_DB_NAME}
+        POSTGRES_USER: ${DB_USER}
+        POSTGRES_PASSWORD: ${DB_PASSWORD}
+      ports:
+        - "${DEV_PRODUCTS_DB_PORT}:5432"
+      volumes:
+        - ./volumes/products_db_data:/var/lib/postgresql/data
+      networks:
+        - backend_network
     
