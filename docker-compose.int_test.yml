@@ -12,6 +12,7 @@ services:
       - DATABASE_URL=${PRODUCTS_SERVICE_DB_URL}
       - PRODUCTS_SERVICE_URL=${PRODUCTS_SERVICE_URL}
       - REVIEWS_SERVICE_URL=${REVIEWS_SERVICE_URL}
+      - FLASK_ENV=testing
     ports:
       - "5001:5001"
     networks:
@@ -27,6 +28,7 @@ services:
       - DATABASE_URL=${REVIEWS_SERVICE_DB_URL}
       - PRODUCTS_SERVICE_URL=${PRODUCTS_SERVICE_URL}
       - REVIEWS_SERVICE_URL=${REVIEWS_SERVICE_URL}
+      - FLASK_ENV=testing
     ports:
       - "5000:5000"
     networks:
@@ -86,16 +88,5 @@ services:
     environment:
       - PRODUCTS_SERVICE_URL=${PRODUCTS_SERVICE_URL}
       - REVIEWS_SERVICE_URL=${REVIEWS_SERVICE_URL}
-    command: >
-      bash -c "
-        pip install -r /requirements.txt &&
-        python -c \"
-      import sys
-      from app import create_app
-      from app.models import db
-      app = create_app()
-      with app.app_context():
-        db.create_all()
-        \" &&
-              pytest /tests/integration_test.py -v
-            "
+      - FLASK_ENV=testing
+    command: bash -c "pip install -r /requirements.txt && pytest /tests/integration_test.py -v"
