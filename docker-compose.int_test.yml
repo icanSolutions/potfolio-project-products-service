@@ -68,12 +68,15 @@ services:
 
   integration_tests:
     image: python:3.10
+    working_dir: /tests
+    volumes:
+      - ./tests:/tests
+    networks:
+      - backend_network
     depends_on:
       - products_service
       - reviews_service
       - products_db
       - reviews_db
       - rabbitmq
-    networks:
-      - backend_network
-    command: pytest ./tests/integration_test.py -v
+    command: bash -c "pip install pytest aiohttp && pytest /tests/integration_test.py -v"
