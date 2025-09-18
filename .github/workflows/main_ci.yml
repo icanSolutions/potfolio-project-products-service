@@ -29,6 +29,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.GH_PERSONAL_TOKEN }}
-          repository: icanSolutions/integration-tests
+          repository: icanSolutions/portfolio-project-intergration-test
           event-type: products-service-updated
           client-payload: '{"image":"${{ steps.build.outputs.image_name }}"}'
