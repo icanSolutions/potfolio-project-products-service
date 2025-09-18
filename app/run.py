@@ -11,7 +11,7 @@ app = create_app()
 print("DB_URI is:", os.getenv('DATABASE_URL'))
 
 if __name__ == '__main__':
-    port = int(os.getenv('SERVICE_PORT', 5001))
+    port = int(app.config['SERVICE_PORT'])
     if app.config["ENV"] == "development":
         with app.app_context():
             db.create_all()
