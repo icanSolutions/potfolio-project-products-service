@@ -20,7 +20,7 @@ services:
       - rabbitmq
 
   reviews_service:
-    image: "morbarda/reviews-service:latest"
+    image: "morbarda/reviews-service:testing"
     container_name: reviews_service
     environment:
       - DATABASE_URL=${REVIEWS_SERVICE_DB_URL}
