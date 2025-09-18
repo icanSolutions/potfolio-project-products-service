@@ -12,7 +12,7 @@ print("DB_URI is:", os.getenv('DATABASE_URL'))
 
 if __name__ == '__main__':
     port = int(app.config['SERVICE_PORT'])
-    if app.config["ENV"] == "development":
+    if app.config["ENV"] != "production":
         with app.app_context():
             db.create_all()
     app.run(host='0.0.0.0', port=port, debug=app.config['DEBUG'])
