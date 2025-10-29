@@ -47,5 +47,11 @@ async def test_products_and_reviews_connection():
             assert res.status == 204
 
         # Check that the Review is deleted 
-        async with session.get(f"{REVIEWS_SERVICE_URL}/reviews/{review['id']}") as res:
-            assert res.status == 404  
+        timeout = 5
+        for _ in range(timeout):
+            async with session.get(f"{REVIEWS_SERVICE_URL}/reviews/{review['id']}") as res:
+                if res.status == 404:
+                    break
+            await asyncio.sleep(1)
+        else:
+            assert False, "Review was not deleted after product deletion"  
