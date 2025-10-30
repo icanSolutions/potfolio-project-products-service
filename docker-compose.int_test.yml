@@ -41,10 +41,11 @@ services:
       rabbitmq:
         condition: service_healthy
 
+  # rabbit consmer server
   reviews_consumer:
       image: "morbarda/reviews-service:latest"
       container_name: reviews_consumer
-      command: python run_consumer.py
+      command: python app/run_consumer.py
       environment:
         - DATABASE_URL=${REVIEWS_SERVICE_DB_URL}
         - PRODUCTS_SERVICE_URL=${PRODUCTS_SERVICE_URL}
@@ -90,6 +91,7 @@ services:
     networks:
       - backend_network
 
+  # rabbit server
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
