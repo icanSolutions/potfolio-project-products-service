@@ -41,6 +41,25 @@ services:
       rabbitmq:
         condition: service_healthy
 
+    reviews_consumer:
+        image: "morbarda/reviews-service:latest"
+        container_name: reviews_consumer
+        command: python run_consumer.py
+        environment:
+          - DATABASE_URL=${REVIEWS_SERVICE_DB_URL}
+          - PRODUCTS_SERVICE_URL=${PRODUCTS_SERVICE_URL}
+          - REVIEWS_SERVICE_URL=${REVIEWS_SERVICE_URL}
+          - FLASK_ENV=testing
+        ports:
+          - "5000:5000"
+        networks:
+          - backend_network
+        depends_on:
+          reviews_db:
+            condition: service_healthy
+          rabbitmq:
+            condition: service_healthy
+
   products_db:
     image: postgres:15
     container_name: products_test_db
