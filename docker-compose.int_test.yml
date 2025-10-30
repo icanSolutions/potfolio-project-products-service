@@ -45,7 +45,7 @@ services:
   reviews_consumer:
       image: "morbarda/reviews-service:latest"
       container_name: reviews_consumer
-      command: python -m app.run_consumer.py
+      command: python -m app.run_consumer
       environment:
         - DATABASE_URL=${REVIEWS_SERVICE_DB_URL}
         - PRODUCTS_SERVICE_URL=${PRODUCTS_SERVICE_URL}
