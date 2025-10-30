@@ -12,7 +12,7 @@ marshmallow-sqlalchemy
 werkzeug<3.0
 alembic
 Flask-Cors
-pika>=1.3.1
+pika
 python-dotenv>=1.0.0
 aiohttp==3.9.0
 pytest-asyncio==0.21.0
