@@ -42,7 +42,7 @@ services:
         condition: service_healthy
 
     reviews_consumer:
-        image: "morbarda/reviews-service:testing"
+        image: "morbarda/reviews-service:latest"
         container_name: reviews_consumer
         command: python run_consumer.py
         environment:
