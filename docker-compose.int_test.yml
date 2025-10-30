@@ -50,8 +50,6 @@ services:
         - PRODUCTS_SERVICE_URL=${PRODUCTS_SERVICE_URL}
         - REVIEWS_SERVICE_URL=${REVIEWS_SERVICE_URL}
         - FLASK_ENV=testing
-      ports:
-        - "5000:5000"
       networks:
         - backend_network
       depends_on:
